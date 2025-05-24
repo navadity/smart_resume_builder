@@ -1,5 +1,5 @@
 import streamlit as st
-from pdfminer.high_level import extract_text
+import PyPDF2
 import re
 import json
 
@@ -25,7 +25,12 @@ def extract_skills(text, skills_db):
 # Parse resume PDF
 
 def parse_resume_text(file):
-    text = extract_text(file)
+    reader = PyPDF2.PdfReader(file)
+    text = ""
+    for page in reader.pages:
+        page_text = page.extract_text()
+        if page_text:
+            text += page_text
     return text
 
 if uploaded_file and job_description:
