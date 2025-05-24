@@ -1,5 +1,5 @@
 import streamlit as st
-import fitz  # PyMuPDF
+from pdfminer.high_level import extract_text
 import re
 import json
 
@@ -23,11 +23,9 @@ def extract_skills(text, skills_db):
     return list({skill for skill in skills_db if re.search(rf"\b{re.escape(skill)}\b", text)})
 
 # Parse resume PDF
+
 def parse_resume_text(file):
-    doc = fitz.open(stream=file.read(), filetype="pdf")
-    text = ""
-    for page in doc:
-        text += page.get_text()
+    text = extract_text(file)
     return text
 
 if uploaded_file and job_description:
