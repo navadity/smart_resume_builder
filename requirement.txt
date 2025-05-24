@@ -1,2 +1,2 @@
 streamlit
-pymupdf==1.22.3
+pdfminer.six
