@@ -1,16 +1,12 @@
 import streamlit as st
 from pypdf import PdfReader
-import spacy
 import subprocess
 import re
 
+def extract_skills(text, skills_db):
+    text = text.lower()
+    return list({skill for skill in skills_db if re.search(rf"\b{re.escape(skill)}\b", text)})
 
-# Load spaCy model (download if missing)
-try:
-    nlp = spacy.load("en_core_web_sm")
-except:
-    subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"])
-    nlp = spacy.load("en_core_web_sm")
 
 # Skill list (expand as needed)
 skills_db = [
