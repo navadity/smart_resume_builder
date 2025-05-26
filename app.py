@@ -2,6 +2,8 @@ import streamlit as st
 from pypdf import PdfReader
 import spacy
 import subprocess
+import re
+
 
 # Load spaCy model (download if missing)
 try:
@@ -26,10 +28,9 @@ def extract_resume_text(file):
             text += content
     return text
 
-# Extract skills using spaCy tokens
 def extract_skills(text, skill_db):
-    doc = nlp(text.lower())
-    return list({token.text for token in doc if token.text in skill_db})
+    text = text.lower()
+    return list({skill for skill in skill_db if re.search(rf"\b{re.escape(skill)}\b", text)})
 
 # Streamlit UI
 st.title("📄 Smart Resume Analyzer")
